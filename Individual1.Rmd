@@ -1,0 +1,68 @@
+---
+title: "Induvidual1"
+author: "Lucas Herrmann"
+date: "9/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+library(classdata)
+data(choco)
+str(choco) 
+boxplot(choco$CocoaPercent)
+#for the Boxplot there seems to be some definite outliers around the 100% range and possibly the 40% range.
+#Most are concentrated around or just above the 70% mark. 
+hist(choco$CocoaPercent)
+#The Histogram shows those outliers around the 100% mark as well. 
+#This also shows the concentration being around 70%
+table(choco$CountryBeanOrigin)
+
+barplot(table(choco$CountryBeanOrigin), choco$Rating, las=2, cex.names=.5)
+pt210bean<- table(choco$CountryBeanOrigin)[1:10]
+
+pt210bean
+barplot(pt210bean, choco$Rating, las=2, cex.names=1)
+#it seems as if more South American Countries got ratings on their beans compared to those in Africa or other continents. 
+plot(choco$Rating, choco$CocoaPercent)
+#I am not exactly sure what kind of analysis was wanted on Quesiton 3, but the scatter plot does not work here because there are too many points at the same space and it is extremely hard to view. 
+choco$PercentGroup <- floor(choco$CocoaPercent / 10)
+choco$PercentGroup
+boxplot(choco$PercentGroup, choco$Rating)
+
+library(classdata)
+library(tidyverse)
+flavor <- table(choco$Characteristics1)
+length(flavor)
+summary(as.numeric(flavor))
+boxplot(flavor)
+flavor_filtered <- flavor[flavor > 50]
+choco_filtered <- filter(choco, Characteristics1 %in% names(flavor_filtered))
+boxplot(flavor_filtered)
+tapply(choco$Rating, choco$CountryBeanOrigin, summary) %>%
+  head(10)
+#Congo and Brazil have the highest mean rating out of this small set of countries that we have here. The differences in mean and median scores seem to suggest that some country beans are better than others. 
+
+
